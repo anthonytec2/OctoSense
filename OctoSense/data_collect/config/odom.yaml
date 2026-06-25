@@ -1,0 +1,32 @@
+# see: https://github.com/anthonytec2/rko_lio/blob/master/launch/odometry.launch.py
+# see: https://github.com/anthonytec2/rko_lio/blob/master/config/ros_default.yaml
+# #############################################################################
+base_frame: base_link
+imu_topic: /rko_lio/imu
+imu_frame: imu_link
+lidar_topic: /rko_lio/lidar
+lidar_frame: lidar_link
+# extrinsic_lidar2base_quat_xyzw_xyz: [qxyzw_xyz as a list, unnecessary if tf is well defined]
+# extrinsic_imu2base_quat_xyzw_xyz: [qxyzw_xyz as a list, unnecessary if tf is well defined]
+odom_topic: /rko_lio/odometry
+odom_frame: odom
+invert_odom_tf: false
+publish_local_map: false
+map_topic: /rko_lio/local_map
+publish_deskewed_scan: true
+deskewed_scan_topic: /rko_lio/frame
+odom_at_imu_rate: true
+odom_at_imu_rate_topic: /rko_lio/odom_at_imu_rate
+seq.tf_at_imu_rate: false
+deskew: true
+voxel_size: 1.0
+max_points_per_voxel: 20
+max_range: 100.0
+min_range: 1.0
+max_correspondence_distance: 0.5
+convergence_criterion: 0.00001
+max_num_threads: 0
+initialization_phase: false
+double_downsample: true
+max_expected_jerk: 3.0
+min_beta: 200.0

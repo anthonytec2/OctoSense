@@ -1,0 +1,20 @@
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Numba JIT caches
+*.nbc
+*.nbi
+
+# CAN DBC files (fetch from opendbc; not redistributed here)
+*.dbc
+
+# Large media (hosted on the Hugging Face dataset page, not in the repo)
+*.mp4
+*.gif
+*.rrd
+
+# OS / editor cruft
+.DS_Store
+*.swp

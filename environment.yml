@@ -1,0 +1,25 @@
+# OctoSense conda environment (CPU by default).
+#   conda env create -f environment.yml
+#   conda activate octosense
+#
+# Installs Python + FFmpeg (the system library torchcodec needs to decode the
+# RGB/IR/event videos), a CPU build of PyTorch + torchcodec, then everything in
+# requirements.txt.
+#
+# For a CUDA GPU (faster video decoding and model inference), after creating the
+# env reinstall the matching GPU builds (CUDA 13 wheels, same versions as the image):
+#   pip install 'torch==2.12.*' 'torchvision==0.27.*' 'torchcodec>=0.14' \
+#       --index-url https://download.pytorch.org/whl/cu130
+name: octosense
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - ffmpeg
+  - pip
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cpu
+      - torch==2.12.0+cpu
+      - torchvision==0.27.0+cpu
+      - torchcodec==0.14.0
+      - -r requirements.txt

@@ -1,0 +1,5 @@
+ACTION=="add", SUBSYSTEM=="net", KERNEL=="can0", \
+  ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="606f", \
+  RUN+="/sbin/ip link set can0 type can bitrate 500000", \
+  RUN+="/sbin/ip link set can0 up"
+

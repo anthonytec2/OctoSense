@@ -1,0 +1,268 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 2rem;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    margin: 0;
+}
+
+.subtitle {
+    color: #94a3b8;
+    margin: 0.25rem 0 0;
+}
+
+.status-pill {
+    background: #1e293b;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.status-combined {
+    font-size: 0.95rem;
+}
+
+.status-combined .separator {
+    color: #475569;
+    margin: 0 0.25rem;
+}
+
+.status-good {
+    background: #0f3a2d !important;
+    color: #4ade80;
+}
+
+.status-bad {
+    background: #3f1d1d !important;
+    color: #f87171;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: #1e293b;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.controls select,
+.controls button {
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+}
+
+.bag-type-select {
+    font-size: 1.1rem;
+    padding: 0.8rem 1.2rem;
+}
+
+.record-btn {
+    font-size: 1.1rem;
+    padding: 0.9rem 2rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+.record-btn.ghost {
+    background: transparent;
+    border: 1px solid #475569;
+    color: #e2e8f0;
+}
+
+.record-btn.danger {
+    background: #f97316;
+    color: #0f172a;
+    border-color: #fdba74;
+}
+
+.record-btn.critical {
+    background: #dc2626;
+    border-color: #f87171;
+    color: #fee2e2;
+}
+
+.record-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.controls button {
+    background: #38bdf8;
+    color: #0f172a;
+    cursor: pointer;
+}
+
+.controls button.ghost {
+    background: transparent;
+    border: 1px solid #475569;
+    color: #e2e8f0;
+}
+
+.controls button.danger {
+    background: #f97316;
+    color: #0f172a;
+    border-color: #fdba74;
+}
+
+.controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.driver-card {
+    margin-top: 1.5rem;
+}
+
+.driver-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.driver-button-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    color: #cbd5f5;
+}
+
+.driver-status-pill {
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    background: #1d1b2e;
+    font-size: 0.85rem;
+    color: #cbd5f5;
+    border: 1px solid #3730a3;
+}
+
+.driver-status-pill.status-running {
+    background: #3b0764;
+    border-color: #d946ef;
+    color: #f5d0fe;
+}
+
+.driver-status-pill.status-failed {
+    background: #450a0a;
+    border-color: #f87171;
+    color: #fecaca;
+}
+
+.driver-status-pill.status-succeeded {
+    background: #052e16;
+    border-color: #22c55e;
+    color: #bbf7d0;
+}
+
+.card {
+    background: #1e293b;
+    border-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+#sensor-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#sensor-table th,
+#sensor-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #334155;
+    text-align: left;
+}
+
+#sensor-table th {
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.status-ok {
+    color: #4ade80;
+}
+
+.status-warning {
+    color: #facc15;
+}
+
+.status-failed {
+    color: #f87171;
+}
+
+.status-unknown {
+    color: #94a3b8;
+}
+
+.status-inactive {
+    color: #64748b;
+    font-style: italic;
+}
+
+.disk-info {
+    background: #1e293b;
+    border-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+}
+
+.disk-display {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 1rem;
+}
+
+@media (max-width: 900px) {
+    header {
+        grid-template-columns: 1fr;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

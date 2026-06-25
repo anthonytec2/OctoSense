@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>data_collect</name>
+  <version>1.0.0</version>
+  <description>OctoSense multi-sensor data-collection controller (cameras, event
+    cameras, LiDAR, IMU, GPS/RTK, CAN) for ROS 2.</description>
+  <maintainer email="abisulco@seas.upenn.edu">Anthony Bisulco</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>composition_interfaces</exec_depend>
+  <exec_depend>rosbag2_interfaces</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>pyserial</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>python3-fastapi</exec_depend>
+  <exec_depend>python3-uvicorn</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

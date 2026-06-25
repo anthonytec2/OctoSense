@@ -1,0 +1,63 @@
+# OctoSense — Python dependencies for using the dataset and running the
+# processing / visualization tooling.  Install with:  pip install -r requirements.txt
+# (or use environment.yml, which additionally installs FFmpeg via conda).
+#
+# Covers: loading sequences (HDF5 + MP4), deriving flow, depth/segmentation
+# ground-truth generation, the semantic-search index (build + query/serve), and
+# Rerun visualization.  Only the raw ROS 2 bag -> HDF5 conversion in
+# data_processing/timesync/ needs the ROS 2 (Jazzy) container (see OctoSense/Dockerfile).
+#
+# System requirement: FFmpeg on PATH (torchcodec decodes the RGB/IR/event MP4s).
+# environment.yml installs it for you; with pip install it yourself
+# (`conda install -c conda-forge ffmpeg` or `apt-get install ffmpeg`).  On a CUDA
+# GPU, install the matching GPU build of torchcodec for hardware-accelerated decoding.
+
+# --- data access / loading ---
+numpy
+pandas                # browse metadata / tabular display
+h5py
+hdf5plugin            # Blosc2 filter for the compressed HDF5 datasets
+pyarrow               # read metadata.parquet
+huggingface_hub       # snapshot_download of sequences
+typer<0.26            # huggingface_hub requires typer<0.26; pin it so pip doesn't
+                      # resolve a newer typer that breaks the `hf` CLI (hf download ...)
+jupyterlab            # run the getting-started notebook locally (octosense_quickstart.ipynb)
+
+# PyTorch + torchcodec are installed by environment.yml (CPU build by default).
+# For a pip-only or GPU setup, install them yourself first, e.g.:
+#   pip install 'torch==2.12.*' 'torchvision==0.27.*' 'torchcodec>=0.14' \
+#       --index-url https://download.pytorch.org/whl/cpu
+# (swap the cpu index for https://download.pytorch.org/whl/cu130 on a CUDA GPU),
+# then run this file.
+
+# --- geometry / visualization ---
+opencv-python-headless  # rectification, montage compositing (no GUI needed)
+matplotlib              # colormaps, plotting
+scipy
+pyproj                  # GPS / UTM handling
+contextily              # basemap tiles for GPS-track plots
+tqdm
+rerun-sdk>=0.31,<0.32   # viewer SDK for viz/rerun_viz.py; capped <0.32 so ouster-sdk
+                        # (lidar_cal, pins psutil<6) can coexist; rerun added psutil>=7 in 0.32
+
+# --- semantic search (query + serve) ---
+faiss-cpu             # nearest-neighbor index over caption embeddings
+sentence-transformers # Qwen3-Embedding text encoder for queries
+rank-bm25             # BM25 lexical scores for hybrid search
+fastapi               # search server
+uvicorn               # ASGI server
+pydantic              # request/response models
+
+# --- ground-truth generation + captioning (data_processing stages) ---
+ultralytics           # YOLO dynamic-object removal for depth_gt
+transformers          # EoMT segmentation model for seg_gt
+pillow                # image IO for seg_gt / sem_search
+openai                # client for the captioning VLM (sem_search ingest-all)
+
+# --- lidar_cal (LiDAR <-> camera extrinsic calibration) ---
+# Only needed if you run data_processing/lidar_cal/.
+open3d                # LiDAR point-cloud plane + circle fit (lidar_detection.py)
+pupil-apriltags       # AprilTag detection on the calibration target (image_detection.py)
+ouster-sdk==0.15.1    # client.SensorInfo / client.XYZLut (lidarCal / lidar_detection / viz_utils).
+                      # 0.15.1 drops the click<8.2 pin of 0.15.0 but still pins psutil<6, which is
+                      # why rerun-sdk is capped <0.32 above (so a single `pip install` resolves).

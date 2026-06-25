@@ -1,0 +1,88 @@
+# Originally: https://github.com/ros-drivers/flir_camera_driver/blob/75905be80a54d9db3fbaaa8d444398712bddba1a/spinnaker_camera_driver/config/flir_ax5.yaml
+# config file for FLIR AX5 cameras (GigE)
+
+parameters:
+  #
+  # -------- image format control
+  #
+  - name: pixel_format
+    type: enum
+    # default is "Mono8", use "Mono16" for full thermal resolution
+    node: ImageFormatControl/PixelFormat
+  - name: image_width
+    type: int
+    node: ImageFormatControl/Width
+  - name: image_height
+    type: int
+    node: ImageFormatControl/Height
+  - name: offset_x # offset must come after image width reduction!
+    type: int
+    node: ImageFormatControl/OffsetX
+  - name: offset_y
+    type: int
+    node: ImageFormatControl/OffsetY
+
+  #
+  # -------- transport layer control (GigE)
+  #
+  - name: gev_scps_packet_size
+    type: int
+    # default is 576. Set to 9000 to enable jumbo frames, ensure NIC MTU set >= 9000
+    node: TransportLayerControl/GevSCPSPacketSize
+  - name: SyncMode
+    type: enum
+    node: DigitalIOControl/SyncMode
+
+  #
+  # -------- digital IO control
+  #
+  - name: line0_selector
+    type: enum
+    # valid values: "Line0", "Line1", "Line2", "Line3"
+    node: DigitalIOControl/LineSelector
+  - name: line0_linemode
+    type: enum
+    # valid values: "Input", "Output"
+    node: DigitalIOControl/LineMode
+
+  #
+  # -------- acquisition control
+  #
+  - name: acquisition_mode
+    type: enum
+    # valid values: "Continuous", "SingleFrame", "MultiFrame"
+    node: AcquisitionControl/AcquisitionMode
+
+  # 
+  # ---------- FLIR Camera Control
+  #
+  - name: sensor_gain_mode
+    type: enum
+    # valid values: "HighGainMode" "LowGainMode"
+    node: CameraControl/SensorGainMode
+  - name: nuc_mode # Non-uniformity Control closes the shutter and recalibrates
+    type: enum
+    # valid values: "Automatic" "External" "Manual"
+    node: CameraControl/NUCMode
+  - name: sensor_dde_mode
+    type: enum
+    # valid values: "Automatic" "Manual" (DDE = Digital Detail Enhancement)
+    node: CameraControl/SensorDDEMode
+
+
+
+  # 
+  # ---------- FLIR Video Control
+  #
+  - name: sensor_video_standard
+    type: enum
+    # valid values: "NTSC30HZ" "PAL25Hz" "NTSC60HZ" "PAL50HZ" (affects framerate)
+    node: Mono8VideoControl/SensorVideoStandard
+  - name: image_adjust_method
+    type: enum
+    # valid values: "PlateauHistogram" "OnceBright" "AutoBright" "Manual" "Linear"
+    node: Mono8VideoControl/ImageAdjustMethod
+  - name: video_orientation
+    type: enum
+    # valid values: "Normal" "Invert" "Revert" "InvertRevert"
+    node: Mono8VideoControl/VideoOrientation

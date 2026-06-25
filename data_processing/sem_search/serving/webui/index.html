@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic Video Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a26;
+            --bg-card: #15151f;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%);
+            --text-primary: #f0f0f5;
+            --text-secondary: #9090a0;
+            --text-muted: #606070;
+            --border-color: #2a2a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-glow: 0 0 40px rgba(0, 217, 255, 0.15);
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Geometric background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(0, 217, 255, 0.08) 0%, transparent 40%),
+                linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gradient);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Search Section */
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.15);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .search-btn {
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Outfit', sans-serif;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .filter-input {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            width: 80px;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--accent-primary);
+        }
+
+        .checkbox-label:hover {
+            color: var(--text-primary);
+        }
+
+        /* Results Header */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .results-count {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .results-count strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .diversity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        /* Result Card */
+        .result-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        .result-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+            transform: translateY(-4px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .video-container {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--bg-primary);
+        }
+
+        .result-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-score {
+            background: rgba(16, 185, 129, 0.9);
+            color: white;
+        }
+
+        .badge-merged {
+            background: rgba(124, 58, 237, 0.9);
+            color: white;
+        }
+
+        .card-content {
+            padding: 16px 20px;
+        }
+
+        .sequence-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sequence-icon {
+            font-size: 1rem;
+        }
+
+        .time-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 12px;
+        }
+
+        .time-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .time-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .frame-info {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .caption-section {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .caption-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .caption-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-style: italic;
+            background: var(--bg-tertiary);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .caption-text:empty {
+            display: none;
+        }
+
+        .action-btn {
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 0.95rem;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🎬</div>
+                <div>
+                    <h1>Semantic Video Search</h1>
+                    <div class="subtitle">RGB Robotics Log Explorer</div>
+                </div>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>System Online</span>
+            </div>
+        </header>
+
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchQuery" class="search-input"
+                        placeholder="e.g., ego vehicle stopped at red light, construction zone with workers..."
+                        onkeypress="if(event.key === 'Enter') search()">
+                </div>
+                <button class="search-btn" onclick="search()">Search</button>
+            </div>
+            <div class="filters">
+                <div class="filter-group">
+                    <span class="filter-label">Max Results:</span>
+                    <input type="number" id="maxResults" class="filter-input" value="12" min="1" max="100">
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Merge Gap (s):</span>
+                    <input type="number" id="mergeGap" class="filter-input" value="10.0" step="0.5" min="0">
+                </div>
+                <div class="filter-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeCaptions" checked>
+                        <span>Show Captions</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <div id="resultsHeader" class="results-header" style="display: none;">
+            <div class="results-count">
+                <strong id="resultCount">0</strong> results from <strong id="candidateCount">0</strong> candidates
+            </div>
+            <div class="diversity-badge">
+                Diversity: <span id="diversityScore">0.00</span>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Searching video logs...</p>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+            <div class="empty-state-icon">📹</div>
+            <h3>Search Your Video Logs</h3>
+            <p>Enter a natural language query to find matching video clips across your robotics dataset.</p>
+        </div>
+
+        <div id="resultsGrid" class="results-grid"></div>
+    </div>
+
+    <script>
+        async function search() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) return;
+
+            const limit = document.getElementById('maxResults').value;
+            const maxGap = document.getElementById('mergeGap').value;
+            const includeCaptions = document.getElementById('includeCaptions').checked;
+
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('resultsHeader').style.display = 'none';
+            document.getElementById('resultsGrid').innerHTML = '';
+
+            try {
+                const params = new URLSearchParams({
+                    q: query,
+                    limit: limit,
+                    max_gap_sec: maxGap,
+                    include_captions: includeCaptions
+                });
+
+                const response = await fetch(`/search?${params}`);
+                const data = await response.json();
+
+                displayResults(data);
+            } catch (error) {
+                console.error('Search failed:', error);
+                document.getElementById('resultsGrid').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <h3>Search Failed</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            } finally {
+                document.getElementById('loading').classList.remove('active');
+            }
+        }
+
+        function displayResults(data) {
+            const { query, results, total_candidates, diversity_score } = data;
+
+            // Update header
+            document.getElementById('resultCount').textContent = results.length;
+            document.getElementById('candidateCount').textContent = total_candidates;
+            document.getElementById('diversityScore').textContent = diversity_score.toFixed(2);
+            document.getElementById('resultsHeader').style.display = 'flex';
+
+            if (results.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                document.getElementById('emptyState').innerHTML = `
+                    <div class="empty-state-icon">🔍</div>
+                    <h3>No Results Found</h3>
+                    <p>Try a different query or adjust your filters.</p>
+                `;
+                return;
+            }
+
+            const grid = document.getElementById('resultsGrid');
+            grid.innerHTML = results.map((result, index) => `
+                <div class="result-card" style="animation-delay: ${index * 0.05}s">
+                    <div class="video-container">
+                        <video 
+                            src="${result.clip_url}" 
+                            controls 
+                            preload="metadata"
+                            poster="/api/thumbnail/${encodeURIComponent(result.video_id)}?frame_idx=${result.start_frame_idx}"
+                        ></video>
+                        <div class="video-overlay">
+                            <span class="badge badge-score">${(result.score * 100).toFixed(0)}%</span>
+                            ${result.merged_count > 1 ? `<span class="badge badge-merged">${result.merged_count} merged</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="sequence-id">
+                            <span class="sequence-icon">📁</span>
+                            ${result.sequence_id}
+                        </div>
+                        <div class="time-info">
+                            <div class="time-item">
+                                <span class="time-label">Start</span>
+                                <span class="time-value">${result.start_time.toFixed(2)}s</span>
+                            </div>
+                            <div class="time-item">
+                                <span class="time-label">End</span>
+                                <span class="time-value">${result.end_time.toFixed(2)}s</span>
+                            </div>
+                            <div class="time-item">
+                                <span class="time-label">Duration</span>
+                                <span class="time-value">${result.duration.toFixed(1)}s</span>
+                            </div>
+                        </div>
+                        ${result.caption ? `
+                        <div class="caption-section">
+                            <div class="caption-label">
+                                <span>📝</span>
+                                <span>Caption</span>
+                            </div>
+                            <div class="caption-text">${result.caption}</div>
+                        </div>
+                        ` : ''}
+                        <div class="card-meta">
+                            <span class="frame-info">Frames ${result.start_frame_idx} - ${result.end_frame_idx}</span>
+                            <button class="action-btn" onclick="copyClipUrl('${result.clip_url}')">Copy URL</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function copyClipUrl(url) {
+            const fullUrl = window.location.origin + url;
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                // Could show a toast notification here
+                console.log('URL copied:', fullUrl);
+            });
+        }
+
+        // Initialize with focus on search
+        document.getElementById('searchQuery').focus();
+    </script>
+</body>
+
+</html>

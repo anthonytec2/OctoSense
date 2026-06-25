@@ -1,0 +1,103 @@
+sensors:
+  event_camera_0:
+    metric: mbps
+    expected: 2.1
+    log_pattern: "event_camera_0"
+    health_required: false
+  event_camera_1:
+    metric: mbps
+    expected: 2.1
+    log_pattern: "event_camera_1"
+    health_required: false
+  cam0:
+    metric: hz
+    expected: 100.00
+    log_pattern: "cam_sync"
+    shared_source: true
+  cam1:
+    metric: hz
+    expected: 100.00
+    log_pattern: "cam_sync"
+    shared_source: true
+  IR-73301414:
+    metric: hz
+    expected: 50.0
+    log_pattern: "73301414"
+  vectornav:
+    metric: hz
+    expected: 400.0
+    query_topic: "/vectornav/raw/time"
+    query_interval: 30
+    query_window: 50
+    query_timeout_s: 30
+    query_sample_duration_s: 5
+    query_env:
+      RMW_IMPLEMENTATION: "rmw_zenoh_cpp"
+  # Optional sensors - monitored but not required for health
+  ublox_gps:
+    metric: hz
+    expected: 5.0
+    query_topic: "/ublox_gps_node/fix"
+    query_interval: 15
+    query_window: 5
+    query_timeout_s: 10
+    query_sample_duration_s: 5
+    health_required: false
+  rtcm:
+    metric: hz
+    expected: 1.0
+    min_threshold: 1.0  # Consider OK if rate is above this value
+    query_topic: "/rtcm"
+    query_interval: 15
+    query_window: 5
+    query_timeout_s: 10
+    query_sample_duration_s: 5
+    health_required: false
+  can_bus:
+    metric: hz
+    expected: 1.0
+    min_threshold: 1.0  # Consider OK if rate is above this value
+    query_topic: "/from_can_bus"
+    query_interval: 15
+    query_window: 5
+    query_timeout_s: 10
+    query_sample_duration_s: 5
+    health_required: false
+  lidar_packets:
+    metric: hz
+    expected: 10.0
+    min_threshold: 1.0  # Consider OK if rate is above this value
+    query_topic: "/lidar_packets"
+    query_interval: 15
+    query_window: 5
+    query_timeout_s: 10
+    query_sample_duration_s: 5
+    health_required: false
+    
+tolerance_pct: 0.10
+failure_timeout_s: 80
+system_launch_cmd: "ros2 launch data_collect system.launch.py"
+bag_output_dir: "/rosbags"
+bag_prefix_map:
+  data: ""
+  cam_cal: "cam_cal"
+  imu_cal: "imu_cal"
+disk_check_path: "/"
+sensor_ready_timeout: 120
+pps:
+  serial_port: "/dev/teensy-pps"
+  serial_baudrate: 115200
+  serial_timeout: 2.0
+  trigger_start_delay_s: 5.0
+  topic_ready_timeout: 120
+  topic_check_interval: 2.0
+  required_topics:
+    - "/cam_sync/cam0/meta"
+    - "/cam_sync/cam1/meta"
+    - "/vectornav/imu"
+    - "/imu_packets"
+    - "/lidar_packets"
+    - "/ouster_time_status"
+    - "/event_camera_0/events"
+    - "/event_camera_1/events"
+    - "/flir_ax5/meta"

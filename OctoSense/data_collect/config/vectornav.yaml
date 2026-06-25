@@ -1,0 +1,55 @@
+# https://github.com/dawonn/vectornav/blob/ros2/vectornav/config/vectornav.yaml
+  port: "/dev/ttyIMU"
+  baud: 921600
+  adjust_ros_timestamp: True
+  reconnect_ms: 500
+  AsyncDataOutputType: 0           # VNOFF
+  AsyncDataOutputFrequency: 1
+  syncInMode: 3                    # SYNCINMODE_COUNT
+  syncInEdge: 0                    # SYNCINEDGE_RISING
+  syncInSkipFactor: 0
+  syncOutMode: 1                   # SYNCOUTMODE_NONE
+  syncOutPolarity: 1               # SYNCOUTPOLARITY_NEGATIVE
+  syncOutSkipFactor: 799
+  syncOutPulseWidth_ns: 500000
+  serialCount: 0                   # COUNTMODE_NONE
+  serialStatus: 0                  # STATUSMODE_OFF
+  spiCount: 0                      # COUNTMODE_NONE
+  spiStatus: 0                     # STATUSMODE_OFF
+  serialChecksum: 1                # CHECKSUMMODE_CHECKSUM
+  spiChecksum: 0                   # CHECKSUMMODE_OFF
+  errorMode: 1                     # ERRORMODE_SEND
+  BO1:
+    asyncMode: 2                   
+    rateDivisor: 2                 
+    commonField: 0x7FFF             
+    timeField: 0x0100              # TIMEGROUP_NONE
+    imuField: 0x0000               # IMUGROUP_NONE
+    attitudeField: 0x0000          # ATTITUDEGROUP_NONE
+    gps2Field: 0x0000              # GPSGROUP_NONE
+    gpsField: 0x0000
+    insField: 0x0000
+
+  # Binary output register 2
+  BO2:
+    asyncMode: 0                   # ASYNCMODE_NONE
+    rateDivisor: 0
+    commonField: 0x0000            # COMMONGROUP_NONE
+    timeField: 0x0000              # TIMEGROUP_NONE
+    imuField: 0x0000               # IMUGROUP_NONE
+    gpsField: 0x0000               # GPSGROUP_NONE
+    attitudeField: 0x0000          # ATTITUDEGROUP_NONE
+    insField: 0x0000               # INSGROUP_NONE
+    gps2Field: 0x0000              # GPSGROUP_NONE
+  # Binary output register 3
+  BO3:
+    asyncMode: 0                   # ASYNCMODE_NONE
+    rateDivisor: 0
+    commonField: 0x0000            # COMMONGROUP_NONE
+    timeField: 0x0000              # TIMEGROUP_NONE
+    imuField: 0x0000               # IMUGROUP_NONE
+    gpsField: 0x0000               # GPSGROUP_NONE
+    attitudeField: 0x0000          # ATTITUDEGROUP_NONE
+    insField: 0x0000               # INSGROUP_NONE
+    gps2Field: 0x0000              # GPSGROUP_NONE
+  frame_id: "vectornav"

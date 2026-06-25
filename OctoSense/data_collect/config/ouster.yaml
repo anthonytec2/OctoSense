@@ -1,0 +1,18 @@
+# see: https://github.com/ouster-lidar/ouster-ros/blob/ros2/ouster-ros/config/driver_params.yaml
+os_sensor:
+  ros__parameters:
+    sensor_hostname: '192.168.123.29'
+    udp_dest: '192.168.123.51'
+    lidar_mode: '2048x10'
+    timestamp_mode: 'TIME_FROM_SYNC_PULSE_IN'
+    udp_profile_lidar: 'RNG19_RFL8_SIG16_NIR16'
+    metadata: ''
+    lidar_port: 0
+    imu_port: 0
+    use_system_default_qos: false
+    azimuth_window_start: 0
+    azimuth_window_end: 360000
+    persist_config: false
+    attempt_reconnect: false
+    dormant_period_between_reconnects: 1.0
+    max_failed_reconnect_attempts: 2147483647

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Robot Data Collection</title>
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>Robot Data Collection</h1>
+            <p class="subtitle">Monitor sensors and control bag recording.</p>
+        </div>
+        <div class="status-pill status-combined">
+            <span id="ws-status">Disconnected</span>
+            <span class="separator">|</span>
+            <span>State:</span>
+            <strong id="state">UNKNOWN</strong>
+        </div>
+    </header>
+
+    <section class="controls">
+        <label for="bag-type">Bag Type</label>
+        <select id="bag-type" class="bag-type-select">
+            <option value="data">Data</option>
+            <option value="cam_cal">Camera Cal</option>
+            <option value="imu_cal">IMU Cal</option>
+        </select>
+        <button id="start-btn" class="record-btn">Start Recording</button>
+        <button id="stop-btn" class="record-btn ghost" style="display: none;">Stop Recording</button>
+        <div class="current-bag">
+            Current Bag:
+            <span id="current-bag">None</span>
+        </div>
+    </section>
+
+    <section class="card">
+        <header>
+            <h2>Sensor Status</h2>
+        </header>
+        <div class="table-wrapper">
+            <table id="sensor-table">
+                <thead>
+                    <tr>
+                        <th>Sensor</th>
+                        <th>Measured</th>
+                        <th>Status</th>
+                        <th>Δ%</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card driver-card">
+        <header>
+            <h2>Driver Controls</h2>
+        </header>
+        <div class="driver-controls">
+            <div class="driver-button-column">
+                <button id="shutdown-btn" class="record-btn critical">Shutdown Controller</button>
+            </div>
+            <span id="driver-status" class="driver-status-pill">Idle</span>
+        </div>
+    </section>
+
+    <section class="card disk-info">
+        <header>
+            <h2>Disk Space</h2>
+        </header>
+        <div class="disk-display">
+            <strong id="disk">--</strong>
+        </div>
+    </section>
+
+    <script src="/app.js"></script>
+</body>
+
+</html>
