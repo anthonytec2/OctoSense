@@ -6,6 +6,7 @@
 <p align="center"><b>Self-Supervised Learning for Multimodal Robot Perception</b></p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2606.27317"><img src="https://img.shields.io/badge/arXiv-2606.27317-b31b1b?logo=arxiv" alt="arXiv"/></a>
   <a href="https://huggingface.co/datasets/anthonytec2/OctoSense"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-OctoSense-yellow" alt="HF Dataset"/></a>
   <a href="https://colab.research.google.com/drive/11hBm5dH--7HueAFCKtaAFnDAJul-52fb?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License"/></a>
@@ -20,12 +21,12 @@
 
 ---
 
-**OctoSense** is a multimodal dataset spanning multiple platforms on a shared sensor rig. The
+**OctoSense** is a multimodal dataset spanning a car, boat, and quadruped on a shared sensor platform. The
 bulk is large-scale **driving**: **59 hours / 2,474 km / 8.43 TB** of time-synchronized data from
 **stereo RGB + event cameras, LiDAR, thermal, IMU, RTK-GPS, and the vehicle CAN bus**, recorded across
 urban, suburban, and rural roads from sunrise to night and through degraded sensors, with
 ground truth for **depth, optical flow, semantic segmentation, and ego-motion**. We also include
-sequences recorded on a **boat** and a **Unitree quadruped** using the same rig. Every sequence is
+sequences recorded on a **boat** and a **Unitree quadruped** using the same sensor platform. Every sequence is
 captured by a fully **open-source sensor platform** and processed with the pipeline in this repo.
 
 > **Getting started with OctoSense data:** the
@@ -156,7 +157,7 @@ still show). For how the index is built, see the
 **[`sem_search` stage details](data_processing/README.md)**.
 
 ### Collect your own data ([`OctoSense/`](OctoSense/))
-Everything to reproduce the rig and record your own synchronized data: the ROS 2 (Jazzy) capture
+Everything to reproduce the sensor platform and record your own synchronized data: the ROS 2 (Jazzy) capture
 stack, **hardware PPS time-sync** (Teensy firmware + KiCad SyncBoard distributing a
 pulse-per-second to every sensor), the mechanical **CAD**, the containerized capture environment, and
 a web monitor to watch per-sensor health and start/stop recording.
@@ -164,11 +165,11 @@ a web monitor to watch per-sensor health and start/stop recording.
 
 <table align="center">
   <tr>
-    <td align="center"><img src="assets/hw_cad.png" alt="OctoSense sensor rig (CAD)" height="230"/></td>
+    <td align="center"><img src="assets/hw_cad.png" alt="OctoSense sensor platform (CAD)" height="230"/></td>
     <td align="center"><img src="assets/hw_syncboard.png" alt="SyncBoard with the Teensy PPS clock" height="230"/></td>
   </tr>
   <tr>
-    <td align="center"><sub>OctoSense Sensor Rig (CAD)</sub></td>
+    <td align="center"><sub>OctoSense Sensor Platform (CAD)</sub></td>
     <td align="center"><sub>Time Synchronization Custom PCB</sub></td>
   </tr>
 </table>

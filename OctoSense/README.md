@@ -1,7 +1,7 @@
 # OctoSense — Data Collection
 
 The data-collection stage of OctoSense: a ROS 2 (Jazzy) node that brings up a
-multi-sensor rig, hardware-synchronizes it with a Teensy PPS trigger, and records
+multi-sensor platform, hardware-synchronizes it with a Teensy PPS trigger, and records
 [rosbag2](https://github.com/ros2/rosbag2) (MCAP) datasets. It ships with a
 small web UI for monitoring sensor health and starting/stopping recordings.
 
@@ -19,7 +19,7 @@ OctoSense/
 ├── teensy/
 │   └── pps_clock/        # Teensy MCU firmware: the PPS clock that hardware-syncs all sensors
 ├── SyncBoard/            # KiCad PCB (schematic + board + .pdf): distributes the Teensy PPS trigger to each sensor
-├── CAD/                  # SolidWorks  parts for the sensor rig (camera bar, plates, cases)
+├── CAD/                  # SolidWorks  parts for the sensor platform (camera bar, plates, cases)
 └── data_collect/         # the ROS 2 data collection package
     ├── config/           # per-sensor configs + sensors_config.yaml (rates, health gates)
     ├── launch/           # system.launch.py brings up the whole sensor stack
@@ -46,7 +46,7 @@ OctoSense/
 
 ## Build and run
 
-The data-collection container runs on the rig's host machine, where it can reach the physical sensors
+The data-collection container runs on the platform's host machine, where it can reach the physical sensors
 (cameras, LiDAR, IMU, GPS, CAN).
 
 **Prerequisites (host):** Docker, the udev rules from [`cfg/`](cfg/) installed (serial/CAN device
@@ -82,17 +82,17 @@ container as `-e`):
 | `PORT` | controller default | web-server port |
 | `CONFIG` | `sensors_config.yaml` | alternate sensor config path (in the container) |
 
-## Hardware (build the rig)
+## Hardware (build the sensor platform)
 
 The physical platform is fully open: the sync firmware, the trigger PCB, and the mechanical CAD.
 
 <table align="center">
   <tr>
-    <td align="center"><img src="../assets/hw_cad.png" alt="OctoSense sensor rig (CAD)" height="230"/></td>
+    <td align="center"><img src="../assets/hw_cad.png" alt="OctoSense sensor platform (CAD)" height="230"/></td>
     <td align="center"><img src="../assets/hw_syncboard.png" alt="SyncBoard with the Teensy PPS clock" height="230"/></td>
   </tr>
   <tr>
-    <td align="center"><sub>OctoSense Sensor Rig (CAD)</sub></td>
+    <td align="center"><sub>OctoSense Sensor Platform (CAD)</sub></td>
     <td align="center"><sub>Time Synchronization Custom PCB</sub></td>
   </tr>
 </table>
@@ -114,7 +114,7 @@ teensy_loader_cli --mcu=TEENSY41 -v -w pps_clock.ino.hex
 **SyncBoard** ([`SyncBoard/`](SyncBoard/)) is a KiCad PCB that fans the Teensy's PPS trigger out to
 each sensor connector. Open `SyncBoard.kicad_pro` in KiCad to edit.
 
-**CAD** ([`CAD/`](CAD/)) holds the SolidWorks parts and assemblies for the sensor rig (camera bar,
+**CAD** ([`CAD/`](CAD/)) holds the SolidWorks parts and assemblies for the sensor platform (camera bar,
 plates, cases).
 
 ## SilkyEvCam event cameras — proprietary HAL plugin
@@ -129,5 +129,5 @@ run it on the host, it installs the HAL plugin, tools, and udev rules:
 
 
 > **Hardware-specific values** (camera serials, sensor IP addresses, network interface
-> names, the CAN/serial udev rules in `cfg/`) are tuned to our rig. Adjust them in the
+> names, the CAN/serial udev rules in `cfg/`) are tuned to our platform. Adjust them in the
 > configs and `cfg/` rules for your own hardware.
